@@ -116,6 +116,9 @@ public class DB {
             builder.addArgument("--skip-name-resolve");
             // builder.addArgument("--verbose");
         }
+        for (final String installArg : configuration.getInstallArgs()) {
+            builder.addArgument(installArg);
+        }
         ManagedProcess mysqlInstallProcess = builder.build();
         return mysqlInstallProcess;
     }

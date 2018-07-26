@@ -51,6 +51,7 @@ public class DBConfigurationBuilder {
     protected boolean isDeletingTemporaryBaseAndDataDirsOnShutdown = true;
     protected boolean isUnpackingFromClasspath = true;
     protected List<String> args = new ArrayList<String>();
+    protected List<String> installArgs = new ArrayList<String>();
     private boolean isSecurityDisabled = true;
 
     private boolean frozen = false;
@@ -157,7 +158,7 @@ public class DBConfigurationBuilder {
     public DBConfiguration build() {
         frozen = true;
         return new DBConfiguration.Impl(_getPort(), _getSocket(), _getBinariesClassPathLocation(), getBaseDir(), getLibDir(), _getDataDir(),
-                WIN32.equals(getOS()), _getArgs(), _getOSLibraryEnvironmentVarName(), isSecurityDisabled(), 
+                WIN32.equals(getOS()), _getArgs(), _getInstallArgs(), _getOSLibraryEnvironmentVarName(), isSecurityDisabled(),
                 isDeletingTemporaryBaseAndDataDirsOnShutdown());
     }
 
@@ -175,6 +176,12 @@ public class DBConfigurationBuilder {
     public DBConfigurationBuilder addArg(String arg) {
         checkIfFrozen("addArg");
         args.add(arg);
+        return this;
+    }
+
+    public DBConfigurationBuilder addInstallArg(String arg) {
+        checkIfFrozen("addInstallArg");
+        installArgs.add(arg);
         return this;
     }
 
@@ -286,6 +293,10 @@ public class DBConfigurationBuilder {
 
     public List<String> _getArgs() {
         return args;
+    }
+
+    public List<String> _getInstallArgs() {
+        return installArgs;
     }
 
 }
