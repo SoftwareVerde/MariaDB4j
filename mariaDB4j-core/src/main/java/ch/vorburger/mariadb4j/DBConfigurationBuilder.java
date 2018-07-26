@@ -185,6 +185,14 @@ public class DBConfigurationBuilder {
         return this;
     }
 
+    protected List<String> _getArgs() {
+        return args;
+    }
+
+    protected List<String> _getInstallArgs() {
+        return installArgs;
+    }
+
     protected String _getDataDir() {
         if (isNull(getDataDir()) || getDataDir().equals(DEFAULT_DATA_DIR))
             return DEFAULT_DATA_DIR + SystemUtils.FILE_SEPARATOR + getPort();
@@ -289,14 +297,6 @@ public class DBConfigurationBuilder {
 
     public String getURL(String databaseName) {
         return "jdbc:mysql://localhost:" + this.getPort() + "/" + databaseName;
-    }
-
-    public List<String> _getArgs() {
-        return args;
-    }
-
-    public List<String> _getInstallArgs() {
-        return installArgs;
     }
 
 }
