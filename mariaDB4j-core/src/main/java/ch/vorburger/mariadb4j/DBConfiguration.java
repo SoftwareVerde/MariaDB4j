@@ -61,6 +61,12 @@ public interface DBConfiguration {
 
     List<String> getArgs();
 
+    /**
+     * These arguments are added to commandline invocation of mysql_install_db.
+     * The argument is assumed to already include double-dash prefixes (as necessary).
+     */
+    List<String> getInstallArgs();
+
     String getOSLibraryEnvironmentVarName();
 
     /** Whether to to "--skip-grant-tables". */
@@ -77,11 +83,12 @@ public interface DBConfiguration {
         private final boolean isDeletingTemporaryBaseAndDataDirsOnShutdown;
         private final boolean isWindows;
         private final List<String> args;
+        private final List<String> installArgs;
         private final String osLibraryEnvironmentVarName;
         private final boolean isSecurityDisabled;
 
         Impl(int port, String socket, String binariesClassPathLocation, String baseDir, String libDir, String dataDir,
-                boolean isWindows, List<String> args, String osLibraryEnvironmentVarName, boolean isSecurityDisabled,
+                boolean isWindows, List<String> args, List<String> installArgs, String osLibraryEnvironmentVarName, boolean isSecurityDisabled,
                 boolean isDeletingTemporaryBaseAndDataDirsOnShutdown) {
             super();
             this.port = port;
@@ -93,6 +100,7 @@ public interface DBConfiguration {
             this.isDeletingTemporaryBaseAndDataDirsOnShutdown = isDeletingTemporaryBaseAndDataDirsOnShutdown;
             this.isWindows = isWindows;
             this.args = args;
+            this.installArgs = installArgs;
             this.osLibraryEnvironmentVarName = osLibraryEnvironmentVarName;
             this.isSecurityDisabled = isSecurityDisabled;
         }
@@ -140,6 +148,11 @@ public interface DBConfiguration {
         @Override
         public List<String> getArgs() {
             return args;
+        }
+
+        @Override
+        public List<String> getInstallArgs() {
+            return installArgs;
         }
 
         @Override
