@@ -116,10 +116,8 @@ public class DB {
             builder.addArgument("--skip-name-resolve");
             // builder.addArgument("--verbose");
         }
-        System.out.println("Initializing mysql_install_db");
         for (final String installArg : configuration.getInstallArgs()) {
             builder.addArgument(installArg);
-            System.out.println("Install Arg: " + installArg);
         }
         ManagedProcess mysqlInstallProcess = builder.build();
         return mysqlInstallProcess;
