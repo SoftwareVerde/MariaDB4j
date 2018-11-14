@@ -19,25 +19,20 @@
  */
 package ch.vorburger.mariadb4j;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.util.Arrays;
-import java.util.List;
-
+import ch.vorburger.exec.ManagedProcess;
+import ch.vorburger.exec.ManagedProcessBuilder;
+import ch.vorburger.exec.ManagedProcessException;
+import ch.vorburger.exec.OutputStreamLogDispatcher;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ch.vorburger.exec.ManagedProcess;
-import ch.vorburger.exec.ManagedProcessBuilder;
-import ch.vorburger.exec.ManagedProcessException;
-import ch.vorburger.exec.OutputStreamLogDispatcher;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Provides capability to install, start, and use an embedded database.
@@ -324,6 +319,14 @@ public class DB {
         } else {
             logger.debug("Database was already stopped.");
         }
+    }
+
+    /**
+     * Sets the maximum time the database will wait before DB::start fails (in milliseconds).
+     * @param dbStartMaxWaitInMS
+     */
+    public void setDBStartMaxWaitInMS(final int dbStartMaxWaitInMS) {
+        this.dbStartMaxWaitInMS = dbStartMaxWaitInMS;
     }
 
     /**
