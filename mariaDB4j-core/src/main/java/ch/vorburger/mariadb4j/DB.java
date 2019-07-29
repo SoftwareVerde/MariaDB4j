@@ -174,7 +174,7 @@ public class DB {
         builder.getEnvironment().put(configuration.getOSLibraryEnvironmentVarName(), libDir.getAbsolutePath());
         builder.addArgument("--no-defaults"); // *** THIS MUST COME FIRST ***
         builder.addArgument("--console");
-        if(this.configuration.isSecurityDisabled()) {
+        if (this.configuration.isSecurityDisabled()) {
             builder.addArgument("--skip-grant-tables");
         }
         if (! hasArgument("--max_allowed_packet")) {
@@ -239,6 +239,10 @@ public class DB {
         source(resource, null, null, null);
     }
 
+    public void source(String resource, String dbName) throws ManagedProcessException {
+        source(resource, null, null, dbName);
+    }
+
     /**
      * Takes in a string that represents a resource on the classpath and sources it via the mysql
      * command line tool.
@@ -285,6 +289,10 @@ public class DB {
             addSocketOrPortArgument(builder);
             if (fromIS != null)
                 builder.setInputStream(fromIS);
+            if (this.configuration.getProcessListener() != null) {
+                builder.setProcessListener(this.configuration.getProcessListener());
+            }
+
             ManagedProcess process = builder.build();
             process.start();
             process.waitForExit();
