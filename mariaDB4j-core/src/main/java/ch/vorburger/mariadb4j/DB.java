@@ -51,8 +51,6 @@ public class DB {
     private File dataDir;
     private ManagedProcess mysqldProcess;
 
-    protected Runnable _preShutdownHook;
-
     protected int dbStartMaxWaitInMS = 30000;
 
     protected DB(DBConfiguration config) {
@@ -332,13 +330,6 @@ public class DB {
     }
 
     /**
-     * Sets the pre-shutdown hook that is run before closing the database.
-     */
-    public void setPreShutdownHook(final Runnable preShutdownHook) {
-        _preShutdownHook = preShutdownHook;
-    }
-
-    /**
      * Sets the maximum time the database will wait before DB::start fails (in milliseconds).
      * @param dbStartMaxWaitInMS
      */
@@ -402,17 +393,6 @@ public class DB {
 
             @Override
             public void run() {
-
-                try {
-                    final Runnable preShutdownHook = _preShutdownHook;
-                    if (preShutdownHook != null) {
-                        preShutdownHook.run();
-                    }
-                }
-                catch (final Exception exception) {
-                    logger.warn("cleanupOnExit() ShutdownHook: An error occurred while performing pre-shutdown hook", exception);
-                }
-
                 // ManagedProcess DestroyOnShutdown ProcessDestroyer does
                 // something similar, but it shouldn't hurt to better be save
                 // than sorry and do it again ourselves here as well.
